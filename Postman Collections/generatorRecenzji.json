@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "be8b6d5b-73bf-490a-9e42-b5936b9b2d7e",
+		"name": "Generator recenzji książek",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dodawanie posta z recenzją",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0cdabcc0-3554-4e2f-80e4-cd85287df283",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"pm.test(\"Check author\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.author).to.eql(pm.iterationData.get(\"autor\"));\r",
+							"});\r",
+							"pm.test(\"Check title\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(pm.iterationData.get(\"tytul\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e965fe26-a706-4b7e-89dd-01504ca1d288",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "30204307-a21e-4a5c-bb05-fb5df1d0c30c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"{{tytul}}\",\r\n    \"author\": \"{{autor}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:3000/posts"
+			},
+			"response": []
+		}
+	]
+}
