@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "b2a952c5-6c48-4f76-81cc-8520ceb5637a",
+		"name": "Generator komentarzy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dodawanie komentarza",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0cdabcc0-3554-4e2f-80e4-cd85287df283",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"pm.test(\"Check author\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.body).to.eql(pm.iterationData.get(\"username\"));\r",
+							"});\r",
+							"pm.test(\"Check title\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.postId).to.eql(pm.iterationData.get(\"comment\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e965fe26-a706-4b7e-89dd-01504ca1d288",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "2a6dd5bb-35ad-46f2-bcab-0f7fa69afb13",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"{{username}}\",\r\n    \"postId\": \"{{comment}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:3000/posts"
+			},
+			"response": []
+		}
+	]
+}
