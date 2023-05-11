@@ -1,0 +1,329 @@
+{
+	"info": {
+		"_postman_id": "8cb06881-267b-4f85-91fc-871aff03b072",
+		"name": "Testy komentarzy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pobranie wszystkich komentarzy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "245c180d-eeea-467f-bc32-e122617d4f2a",
+						"exec": [
+							"pm.test(\"Check body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].body).to.eql(\"some comment\");\r",
+							"}); // sprawdza pierwszą wartość body\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"some comment\");\r",
+							"}); // ogólnie sprawdza wszystko"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "36dc3166-cc67-471e-8ea6-b8e414854cdd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://{{host}}:3000/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "Pobieranie wybranego komentarza",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a5f8c47-0c3a-48d1-9bea-ed27c9348b8a",
+						"exec": [
+							"pm.test(\"Check body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.body).to.eql(\"some comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "7e989f95-4aac-4af9-b8df-e115e630871b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://{{host}}:3000/comments/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrowanie komentarzy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb10b69f-b612-4957-a546-7d4aa947a89d",
+						"exec": [
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"some comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "271d1655-3835-4a43-ae07-a4703ab3df8e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:3000/comments?body=some comment",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "3000",
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "body",
+							"value": "some comment"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dodawanie komentarza",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0bd36815-8977-46eb-bee4-5794ef3a8288",
+						"exec": [
+							"pm.test(\"Check body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.body).to.eql(pm.environment.get(\"randomCom\"))\r",
+							"});\r",
+							"/*\r",
+							"pm.test(\"Check body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.postId).to.eql(pm.environment.get(\"randomNumber\"))\r",
+							"});\r",
+							"*/\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2816f78a-2784-43b0-ad17-b9f80d25e3ab",
+						"exec": [
+							"\r",
+							"pm.environment.set(\"randomCom\", pm.variables.replaceIn('{{$randomDepartment}}'))\r",
+							"pm.environment.set(\"randomNumber\", pm.variables.replaceIn('{{$randomInt}}'));\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "30b2b956-2307-4189-b8ee-38114ce9a7ce",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"body\": \"{{randomCom}}\",\r\n    \"postId\": {{randomNumber}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:3000/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "Aktualizacja komentarza",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "728a3b16-45de-4434-a0b5-d02a9738552e",
+						"exec": [
+							"pm.test(\"Check body\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"some comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "093829d1-31cb-4564-8ba4-4227bbd7b727",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"some comment3\",\r\n    \"postId\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:3000/comments/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Aktualizacja cześci komentarza",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "45da4686-a000-484e-9608-ed083d75c7e4",
+						"exec": [
+							"pm.test(\"Check body\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"some comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "0d463e5a-f6e7-4565-938b-19b228312478",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"some comment3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:3000/comments/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Dodawanie komentarza do usunięcia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0bd36815-8977-46eb-bee4-5794ef3a8288",
+						"exec": [
+							"pm.test(\"Check body\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.body).to.eql(\"some comment\")\r",
+							"});\r",
+							"pm.globals.set(\"postIdToDelete\", pm.response.json().id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "01334b9d-efbb-424a-84cb-62fe37f3511a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"body\": \"some comment\",\r\n    \"postId\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:3000/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "Usuwanie komentarza",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c07cea2f-8aff-475f-a882-d01471b687b9",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "a864f1af-505a-43f3-a0a7-bad989d9e5d7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://{{host}}:3000/comments/{{postIdToDelete}}"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "07c0be2e-a476-4d82-b9f9-cd848afadbb1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0f237748-08ab-41df-81e8-55136e26932e",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Successful request code\", function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+					"});"
+				]
+			}
+		}
+	]
+}
